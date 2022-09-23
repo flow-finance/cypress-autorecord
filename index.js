@@ -10,7 +10,7 @@ const cypressConfig = Cypress.config('autorecord') || {};
 const isCleanMocks = cypressConfig.cleanMocks || false;
 const isForceRecord = cypressConfig.forceRecord || false;
 const recordTests = cypressConfig.recordTests || [];
-const blacklistRoutes = cypressConfig.blacklistRoutes || [];
+// const blacklistRoutes = cypressConfig.blacklistRoutes || [];
 
 let interceptPattern = cypressConfig.interceptPattern || '*';
 const interceptPatternFragments =
@@ -159,7 +159,7 @@ module.exports = function autoRecord() {
             req.reply({
               statusCode: newResponse.status,
               headers: newResponse.headers,
-              fixture: `${fixturesFolderSubDirectory}/${newResponse.fixtureId}.json`,
+              fixture: `${fixturesFolderSubDirectory}/${newResponse.fixtureId}`,
             });
           } else {
             req.reply({
@@ -212,7 +212,7 @@ module.exports = function autoRecord() {
         // If the mock data is too large, store it in a separate json
         if (isFileOversized) {
           fixtureId = guidGenerator();
-          addFixture[path.join(fixturesFolder, fixturesFolderSubDirectory, `${fixtureId}.json`)] = request.data;
+          addFixture[path.join(fixturesFolder, fixturesFolderSubDirectory, `${fixtureId}`)] = request.data;
         }
 
         return {
@@ -231,7 +231,7 @@ module.exports = function autoRecord() {
         routesByTestId[this.currentTest.title].routes.forEach((route) => {
           // If fixtureId exist, delete the json
           if (route.fixtureId) {
-            removeFixture.push(path.join(fixturesFolder, fixturesFolderSubDirectory, `${route.fixtureId}.json`));
+            removeFixture.push(path.join(fixturesFolder, fixturesFolderSubDirectory, `${route.fixtureId}`));
           }
         });
       }
@@ -259,7 +259,7 @@ module.exports = function autoRecord() {
         } else {
           routesByTestId[testName].routes.forEach((route) => {
             if (route.fixtureId) {
-              cy.task('deleteFile', path.join(fixturesFolder, fixturesFolderSubDirectory, `${route.fixtureId}.json`));
+              cy.task('deleteFile', path.join(fixturesFolder, fixturesFolderSubDirectory, `${route.fixtureId}`));
             }
           });
         }
